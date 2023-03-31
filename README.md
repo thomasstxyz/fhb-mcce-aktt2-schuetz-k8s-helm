@@ -1,1 +1,3 @@
-# fhb-mcce-aktt2-schuetz-k8s-helm
+# Demo Go Microservice Delivery with Helm
+
+![](assets/arch-diagram-app.png)
