@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/thomasstxyz/fhb-mcce-aktt2-schuetz-k8s-helm/app
+  repository: ghcr.io/thomasstxyz/fhb-mcce-aktt2-schuetz-k8s-helm
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
