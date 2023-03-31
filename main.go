@@ -24,9 +24,34 @@ import (
 	"os"
 )
 
+// Declare default environment variables
+var (
+	// AppName is the name of the application
+	AppName = "http-server"
+	// AppVersion is the version of the application
+	AppVersion = "0.1.0"
+	// AppCommit is the commit hash of the application
+	AppCommit = "unknown"
+)
+
+// Read environment variables
+func readEnv() {
+	if n := os.Getenv("APP_NAME"); n != "" {
+		AppName = n
+	}
+	if v := os.Getenv("APP_VERSION"); v != "" {
+		AppVersion = v
+	}
+	if c := os.Getenv("APP_COMMIT"); c != "" {
+		AppCommit = c
+	}
+}
+
 func getRoot(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("got / request\n")
-	io.WriteString(w, "This is my website!\n")
+	io.WriteString(w, fmt.Sprintf(
+		"Hello! I'm the %s service, serving version %s from commit %s\n",
+		AppName, AppVersion, AppCommit))
 }
 func getHello(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("got /hello request\n")
@@ -34,6 +59,8 @@ func getHello(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	readEnv()
+
 	http.HandleFunc("/", getRoot)
 	http.HandleFunc("/hello", getHello)
 
