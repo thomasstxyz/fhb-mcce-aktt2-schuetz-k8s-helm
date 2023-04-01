@@ -1,0 +1,8 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: fhb-mcce-aktt2-schuetz-k8s-helm
+  namespace: default
+spec:
+  interval: 1m
+  url: oci://ghcr.io/thomasstxyz/charts/fhb-mcce-aktt2-schuetz-k8s-helm

@@ -1,0 +1,18 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: backend2
+  namespace: default
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: app
+      version: '0.1.x'
+      sourceRef:
+        kind: HelmRepository
+        name: fhb-mcce-aktt2-schuetz-k8s-helm
+        namespace: flux-system
+      interval: 1m
+  values:
+    replicaCount: 1
