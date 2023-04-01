@@ -15,5 +15,5 @@ spec:
         namespace: flux-system
       interval: 1m
   values:
-    replicaCount: 2
+    replicaCount: 1
     backendServices: "backend1-app:8080,backend2-app:8080"
