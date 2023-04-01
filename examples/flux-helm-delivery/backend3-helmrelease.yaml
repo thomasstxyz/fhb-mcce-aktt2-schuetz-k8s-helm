@@ -1,7 +1,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: frontend
+  name: backend3
   namespace: default
 spec:
   interval: 5m
@@ -16,4 +16,3 @@ spec:
       interval: 1m
   values:
     replicaCount: 1
-    backendServices: "backend1-app:8080,backend2-app:8080,backend3-app:8080"
