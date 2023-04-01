@@ -32,8 +32,6 @@ var (
 	AppName = "http-server"
 	// AppVersion is the version of the application
 	AppVersion = "0.1.0"
-	// AppCommit is the commit hash of the application
-	AppCommit = "unknown"
 	// AppBackendServices is a comma-separated list of backend services
 	AppBackendServices []string = []string{"localhost:8080"}
 )
@@ -46,9 +44,6 @@ func readEnv() {
 	if v := os.Getenv("APP_VERSION"); v != "" {
 		AppVersion = v
 	}
-	if c := os.Getenv("APP_COMMIT"); c != "" {
-		AppCommit = c
-	}
 	if b := os.Getenv("APP_BACKEND_SERVICES"); b != "" {
 		b := strings.Split(b, ",")
 		AppBackendServices = b
@@ -58,8 +53,8 @@ func readEnv() {
 var client http.Client
 
 var HelloMessage string = fmt.Sprintf(
-	"Hello from the %s service with version %s from commit %s\n",
-	AppName, AppVersion, AppCommit)
+	"Hello from the %s service with version %s\n",
+	AppName, AppVersion)
 
 func getRoot(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("got / request\n")
