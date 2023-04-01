@@ -37,7 +37,9 @@ spec:
             - name: APP_NAME
               value: {{ include "app.fullname" . }}
             - name: APP_VERSION
-              value: {{ include ".Chart.AppVersion" . }}
+              value: "{{ .Chart.AppVersion }}"
+            - name: APP_BACKEND_SERVICES
+              value: "{{ .Values.backendServices }}"
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
