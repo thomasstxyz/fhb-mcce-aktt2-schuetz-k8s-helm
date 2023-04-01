@@ -5,4 +5,4 @@ metadata:
   namespace: default
 spec:
   interval: 1m
-  url: oci://ghcr.io/thomasstxyz/charts/fhb-mcce-aktt2-schuetz-k8s-helm
+  url: oci://ghcr.io/thomasstxyz/charts/fhb-mcce-aktt2-schuetz-k8s-helm/app
