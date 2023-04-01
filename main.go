@@ -36,6 +36,21 @@ var (
 	AppBackendServices []string = []string{"localhost:8080"}
 )
 
+func main() {
+	readEnv()
+
+	http.HandleFunc("/", getRoot)
+	http.HandleFunc("/hello", getHello)
+
+	err := http.ListenAndServe(":8080", nil)
+	if errors.Is(err, http.ErrServerClosed) {
+		fmt.Printf("server closed\n")
+	} else if err != nil {
+		fmt.Printf("error starting server: %s\n", err)
+		os.Exit(1)
+	}
+}
+
 // Read environment variables
 func readEnv() {
 	if n := os.Getenv("APP_NAME"); n != "" {
@@ -51,10 +66,6 @@ func readEnv() {
 }
 
 var client http.Client
-
-var HelloMessage string = fmt.Sprintf(
-	"Hello from the %s service with version %s\n",
-	AppName, AppVersion)
 
 func getRoot(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("got / request\n")
@@ -86,21 +97,10 @@ func getRoot(w http.ResponseWriter, r *http.Request) {
 }
 
 func getHello(w http.ResponseWriter, r *http.Request) {
+	var HelloMessage string = fmt.Sprintf(
+		"Hello from the %s service with version %s\n",
+		AppName, AppVersion)
+	
 	fmt.Printf("got /hello request\n")
 	io.WriteString(w, HelloMessage)
-}
-
-func main() {
-	readEnv()
-
-	http.HandleFunc("/", getRoot)
-	http.HandleFunc("/hello", getHello)
-
-	err := http.ListenAndServe(":8080", nil)
-	if errors.Is(err, http.ErrServerClosed) {
-		fmt.Printf("server closed\n")
-	} else if err != nil {
-		fmt.Printf("error starting server: %s\n", err)
-		os.Exit(1)
-	}
 }
