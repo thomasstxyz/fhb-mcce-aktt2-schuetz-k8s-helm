@@ -2,7 +2,8 @@
 
 ![](assets/arch-diagram-app.png)
 
-You can find the helm chart in `./helmcharts/app` directory.
+You can find the helm chart in `./helmcharts/app` directory
+along with a easy-to-read [README](helmcharts/app/README.md).
 It is packaged and pushed to the OCI Repository
 `oci://ghcr.io/thomasstxyz/charts/fhb-mcce-aktt2-schuetz-k8s-helm`.
 
