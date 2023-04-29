@@ -7,6 +7,12 @@ Installs the [app](https://github.com/thomasstxyz/fhb-mcce-aktt2-schuetz-k8s-hel
 - Kubernetes 1.16+
 - Helm 3+
 
+## Configuration
+
+You can configure a helm release to function as the frontend service,
+by using the variable `backendServices`.
+See [examples/helm-cli/README.md](examples/helm-cli/README.md) for an example.
+
 ## Install Helm Chart
 
 ```console
