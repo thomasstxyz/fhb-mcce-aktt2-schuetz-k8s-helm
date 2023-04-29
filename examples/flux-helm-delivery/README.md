@@ -55,3 +55,11 @@ and applies manifests it finds there to your cluster.
 
 This path contains our `HelmRepository` and `HelmRelease` manifests.
 After successful reconciliation, you should see the App being deployed.
+
+Now you may port-forward the frontend service:
+
+```bash
+kubectl -n default port-forward svc/frontend-app 8080
+```
+
+and have a look via a web browser on your local machine at [http://127.0.0.1:8080/](http://127.0.0.1:8080/)

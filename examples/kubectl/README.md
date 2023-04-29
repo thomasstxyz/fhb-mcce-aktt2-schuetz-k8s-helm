@@ -1,23 +1,30 @@
 # Delivery with kubectl
 
-It is used for client-server communication. Helm is installed in the system namespace kube-system, so it can perform operations on a Kubernetes cluster. To install the server part on the cluster and add local settings, run the command:
+## Install
 
+```bash
+kubectl apply -f examples/kubectl/manifest.yaml
 ```
-helm init
 
+Now you may port-forward the frontend service:
 
-
-1. How to apply the resource to our Cluster:
-
+```bash
+kubectl -n default port-forward svc/frontend-app 8080
 ```
-kubectl apply -f  helmrepository.yaml
-```
-2. When running following Command you can see HelmChart
-```
-kubectl get helmchart
-```
-3. To see artefacts and  other parameters from HelmChart you can run following:
 
-```
-kubectl describe helmchart podinfo
+and have a look via a web browser on your local machine at [http://127.0.0.1:8080/](http://127.0.0.1:8080/)
 
+## Uninstall
+
+```bash
+kubectl delete -f examples/kubectl/manifest.yaml
+```
+
+## Notes
+
+> The `manifest.yaml` was previously built like this:
+>
+>     helm template backend1 ./helmcharts/app > examples/kubectl/manifest.yaml
+>     helm template backend2 ./helmcharts/app >> examples/kubectl/manifest.yaml
+>     helm template backend3 ./helmcharts/app >> examples/kubectl/manifest.yaml
+>     helm template frontend ./helmcharts/app --version 0.1.5 --set backendServices="backend1-app:8080\,backend2-app:8080\,backend3-app:8080" >> examples/kubectl/manifest.yaml

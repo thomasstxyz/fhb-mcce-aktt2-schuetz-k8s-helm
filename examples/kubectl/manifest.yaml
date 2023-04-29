@@ -1,0 +1,436 @@
+---
+# Source: app/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: backend1-app
+  labels:
+    helm.sh/chart: app-0.1.5
+    app.kubernetes.io/name: app
+    app.kubernetes.io/instance: backend1
+    app.kubernetes.io/version: "0.1.5"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: app/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend1-app
+  labels:
+    helm.sh/chart: app-0.1.5
+    app.kubernetes.io/name: app
+    app.kubernetes.io/instance: backend1
+    app.kubernetes.io/version: "0.1.5"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: app
+    app.kubernetes.io/instance: backend1
+---
+# Source: app/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend1-app
+  labels:
+    helm.sh/chart: app-0.1.5
+    app.kubernetes.io/name: app
+    app.kubernetes.io/instance: backend1
+    app.kubernetes.io/version: "0.1.5"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: app
+      app.kubernetes.io/instance: backend1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: app
+        app.kubernetes.io/instance: backend1
+    spec:
+      serviceAccountName: backend1-app
+      securityContext:
+        {}
+      containers:
+        - name: app
+          securityContext:
+            {}
+          image: "ghcr.io/thomasstxyz/fhb-mcce-aktt2-schuetz-k8s-helm:0.1.5"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: APP_NAME
+              value: backend1-app
+            - name: APP_VERSION
+              value: "0.1.5"
+            - name: APP_BACKEND_SERVICES
+              value: "localhost:8080"
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {}
+---
+# Source: app/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "backend1-app-test-connection"
+  labels:
+    helm.sh/chart: app-0.1.5
+    app.kubernetes.io/name: app
+    app.kubernetes.io/instance: backend1
+    app.kubernetes.io/version: "0.1.5"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['backend1-app:8080']
+  restartPolicy: Never
+---
+# Source: app/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: backend2-app
+  labels:
+    helm.sh/chart: app-0.1.5
+    app.kubernetes.io/name: app
+    app.kubernetes.io/instance: backend2
+    app.kubernetes.io/version: "0.1.5"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: app/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend2-app
+  labels:
+    helm.sh/chart: app-0.1.5
+    app.kubernetes.io/name: app
+    app.kubernetes.io/instance: backend2
+    app.kubernetes.io/version: "0.1.5"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: app
+    app.kubernetes.io/instance: backend2
+---
+# Source: app/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend2-app
+  labels:
+    helm.sh/chart: app-0.1.5
+    app.kubernetes.io/name: app
+    app.kubernetes.io/instance: backend2
+    app.kubernetes.io/version: "0.1.5"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: app
+      app.kubernetes.io/instance: backend2
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: app
+        app.kubernetes.io/instance: backend2
+    spec:
+      serviceAccountName: backend2-app
+      securityContext:
+        {}
+      containers:
+        - name: app
+          securityContext:
+            {}
+          image: "ghcr.io/thomasstxyz/fhb-mcce-aktt2-schuetz-k8s-helm:0.1.5"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: APP_NAME
+              value: backend2-app
+            - name: APP_VERSION
+              value: "0.1.5"
+            - name: APP_BACKEND_SERVICES
+              value: "localhost:8080"
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {}
+---
+# Source: app/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "backend2-app-test-connection"
+  labels:
+    helm.sh/chart: app-0.1.5
+    app.kubernetes.io/name: app
+    app.kubernetes.io/instance: backend2
+    app.kubernetes.io/version: "0.1.5"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['backend2-app:8080']
+  restartPolicy: Never
+---
+# Source: app/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: backend3-app
+  labels:
+    helm.sh/chart: app-0.1.5
+    app.kubernetes.io/name: app
+    app.kubernetes.io/instance: backend3
+    app.kubernetes.io/version: "0.1.5"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: app/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend3-app
+  labels:
+    helm.sh/chart: app-0.1.5
+    app.kubernetes.io/name: app
+    app.kubernetes.io/instance: backend3
+    app.kubernetes.io/version: "0.1.5"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: app
+    app.kubernetes.io/instance: backend3
+---
+# Source: app/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend3-app
+  labels:
+    helm.sh/chart: app-0.1.5
+    app.kubernetes.io/name: app
+    app.kubernetes.io/instance: backend3
+    app.kubernetes.io/version: "0.1.5"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: app
+      app.kubernetes.io/instance: backend3
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: app
+        app.kubernetes.io/instance: backend3
+    spec:
+      serviceAccountName: backend3-app
+      securityContext:
+        {}
+      containers:
+        - name: app
+          securityContext:
+            {}
+          image: "ghcr.io/thomasstxyz/fhb-mcce-aktt2-schuetz-k8s-helm:0.1.5"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: APP_NAME
+              value: backend3-app
+            - name: APP_VERSION
+              value: "0.1.5"
+            - name: APP_BACKEND_SERVICES
+              value: "localhost:8080"
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {}
+---
+# Source: app/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "backend3-app-test-connection"
+  labels:
+    helm.sh/chart: app-0.1.5
+    app.kubernetes.io/name: app
+    app.kubernetes.io/instance: backend3
+    app.kubernetes.io/version: "0.1.5"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['backend3-app:8080']
+  restartPolicy: Never
+---
+# Source: app/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: frontend-app
+  labels:
+    helm.sh/chart: app-0.1.5
+    app.kubernetes.io/name: app
+    app.kubernetes.io/instance: frontend
+    app.kubernetes.io/version: "0.1.5"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: app/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-app
+  labels:
+    helm.sh/chart: app-0.1.5
+    app.kubernetes.io/name: app
+    app.kubernetes.io/instance: frontend
+    app.kubernetes.io/version: "0.1.5"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: app
+    app.kubernetes.io/instance: frontend
+---
+# Source: app/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-app
+  labels:
+    helm.sh/chart: app-0.1.5
+    app.kubernetes.io/name: app
+    app.kubernetes.io/instance: frontend
+    app.kubernetes.io/version: "0.1.5"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: app
+      app.kubernetes.io/instance: frontend
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: app
+        app.kubernetes.io/instance: frontend
+    spec:
+      serviceAccountName: frontend-app
+      securityContext:
+        {}
+      containers:
+        - name: app
+          securityContext:
+            {}
+          image: "ghcr.io/thomasstxyz/fhb-mcce-aktt2-schuetz-k8s-helm:0.1.5"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: APP_NAME
+              value: frontend-app
+            - name: APP_VERSION
+              value: "0.1.5"
+            - name: APP_BACKEND_SERVICES
+              value: "backend1-app:8080,backend2-app:8080,backend3-app:8080"
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {}
+---
+# Source: app/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "frontend-app-test-connection"
+  labels:
+    helm.sh/chart: app-0.1.5
+    app.kubernetes.io/name: app
+    app.kubernetes.io/instance: frontend
+    app.kubernetes.io/version: "0.1.5"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['frontend-app:8080']
+  restartPolicy: Never
